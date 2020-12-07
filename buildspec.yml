@@ -1,0 +1,10 @@
+version: 0.1
+phases:
+  build:
+    commands:
+      - echo Deploying frontend
+      - aws s3 cp . s3://$FRONTEND_S3_BUCKET --recursive
+      - echo Deploying lf1
+      - ./lf1/upload.sh
+      - echo Deploying lf2
+      - ./lf2/upload.sh

@@ -1,0 +1,466 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Metadata": {
+    "AWS::CloudFormation::Designer": {
+      "52166f9c-2ad4-4373-ad41-ed475a5ad9ef": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 80,
+          "y": 70
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "a2cb0a72-98ac-4a89-a6d8-c87b3728c97b": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 230,
+          "y": 300
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "b92a9d00-3fce-4b0b-9feb-d5b4f2991d6b": {
+        "size": {
+          "width": 140,
+          "height": 140
+        },
+        "position": {
+          "x": 220,
+          "y": 40
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "a1a660f3-5c07-4a7b-a419-5ec3d0dbd512": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 690,
+          "y": 230
+        },
+        "z": 2,
+        "parent": "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+        "embeds": []
+      },
+      "7e0a730c-8412-49d0-ab7b-b52c4d2eaa2a": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 780,
+          "y": 160
+        },
+        "z": 2,
+        "parent": "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+        "embeds": []
+      },
+      "aba78d54-d11e-45eb-9404-f576c840faea": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 780,
+          "y": 260
+        },
+        "z": 2,
+        "parent": "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+        "embeds": []
+      },
+      "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9": {
+        "size": {
+          "width": 740,
+          "height": 350
+        },
+        "position": {
+          "x": 540,
+          "y": 70
+        },
+        "z": 0,
+        "embeds": [
+          "2cbd9703-aebc-41c0-8c62-ac462d1b04a8",
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6"
+        ]
+      },
+      "c7f333b3-a38c-403b-859b-519d0d2dc3a6": {
+        "size": {
+          "width": 290,
+          "height": 270
+        },
+        "position": {
+          "x": 620,
+          "y": 110
+        },
+        "z": 1,
+        "parent": "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+        "embeds": [
+          "9b7ce24b-e5d5-421b-8a90-5d941e1fe191",
+          "aba78d54-d11e-45eb-9404-f576c840faea",
+          "7e0a730c-8412-49d0-ab7b-b52c4d2eaa2a",
+          "a1a660f3-5c07-4a7b-a419-5ec3d0dbd512"
+        ],
+        "iscontainedinside": [
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9"
+        ]
+      },
+      "2cbd9703-aebc-41c0-8c62-ac462d1b04a8": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 980,
+          "y": 120
+        },
+        "z": 1,
+        "parent": "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+        "embeds": [],
+        "iscontainedinside": [
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9",
+          "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9"
+        ]
+      },
+      "9b7ce24b-e5d5-421b-8a90-5d941e1fe191": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 630,
+          "y": 140
+        },
+        "z": 2,
+        "parent": "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+        "embeds": [],
+        "iscontainedinside": [
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6",
+          "c7f333b3-a38c-403b-859b-519d0d2dc3a6"
+        ]
+      },
+      "0b58cfbe-c104-4bfa-80cd-55a63eb71e12": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 750,
+          "y": -30
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "3da81b48-d098-418f-85ac-5868faa67230": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 410,
+          "y": -20
+        },
+        "z": 0,
+        "embeds": []
+      }
+    }
+  },
+  "Resources": {
+    "CloudHW3B1": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "PublicRead"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "52166f9c-2ad4-4373-ad41-ed475a5ad9ef"
+        }
+      }
+    },
+    "CloudHW3B2": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {},
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "a2cb0a72-98ac-4a89-a6d8-c87b3728c97b"
+        }
+      }
+    },
+    "CloudHW3Gateway": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {},
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "b92a9d00-3fce-4b0b-9feb-d5b4f2991d6b"
+        }
+      }
+    },
+    "CloudHW3ES": {
+      "Type": "AWS::Elasticsearch::Domain",
+      "Properties": {},
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "a1a660f3-5c07-4a7b-a419-5ec3d0dbd512"
+        }
+      }
+    },
+    "CloudHW3LF2": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "role": {
+          "Ref": "CloudHW3Role"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "7e0a730c-8412-49d0-ab7b-b52c4d2eaa2a"
+        }
+      }
+    },
+    "CloudHW3LF1": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "SecurityGroupIds": "${CloudHW3VPC.VpcId}",
+        "Role": {
+          "Ref": "CloudHW3Role"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "aba78d54-d11e-45eb-9404-f576c840faea"
+        }
+      }
+    },
+    "CloudHW3VPC": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/24"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "e5dfad3d-9c60-4c4e-b4e6-f798eadbabd9"
+        }
+      }
+    },
+    "CloudHW3SN": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "CloudHW3VPC"
+        },
+        "CidrBlock": "10.0.0.128/25"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "c7f333b3-a38c-403b-859b-519d0d2dc3a6"
+        }
+      }
+    },
+    "CloudHW3SG": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "VpcId": {
+          "Ref": "CloudHW3VPC"
+        },
+        "Ingress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "IpProtocol": -1
+          }
+        ],
+        "Egress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "IpProtocol": -1
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "2cbd9703-aebc-41c0-8c62-ac462d1b04a8"
+        }
+      }
+    },
+    "CloudHW3SNCidrBlock": {
+      "Type": "AWS::EC2::SubnetCidrBlock",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "CloudHW3SN"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "9b7ce24b-e5d5-421b-8a90-5d941e1fe191"
+        }
+      }
+    },
+    "CloudHW3Role": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2020-12-7",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "*"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "root",
+            "PolicyDocument": {
+              "Version": "2020-12-07",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": "*",
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "0b58cfbe-c104-4bfa-80cd-55a63eb71e12"
+        }
+      }
+    },
+    "CloudHW3CP": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "Properties": {
+        "RoleArn": {
+          "Ref": "CloudHW3Role"
+        },
+        "Stages": [
+          {
+            "Name": "Source",
+            "Actions": [
+              {
+                "Name": "SourceAction",
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "ThirdParty",
+                  "Version": "1",
+                  "Provider": "Github"
+                },
+                "OutputArtifacts": [
+                  {
+                    "Name": "SourceOutput"
+                  }
+                ],
+                "Configuration": {
+                  "Owner": {"Ref": "GitHubUser"},
+                  "Repo": {"Ref": "GitHubRepo"},
+                  "Branch": {"Ref": "GitHubBranch"},
+                  "OAuthToken": {"Ref": "GitHubToken"}
+                },
+                "RunOrder": 1
+              }
+            ]
+          },
+          {
+            "Name": "Deploy",
+            "Actions": [
+              {
+                "Name": "DeployAction",
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Version": "1",
+                  "Provider": "CodeBuild"
+                },
+                "Configuration": {
+                  "ProjectName": {"Ref": "DeployAction"}
+                },
+                "InputArtifacts": {
+                  "Name": "SourceOutput"
+                },
+                "OutputArtifacts":{
+                  "Name": "DeployOutput"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "CloudHW3CodeBuild": {
+        "Type": "AWS::CodeBuild::Project",
+        "Properties": {
+          "Artifacts": {"Type": "CODEPIPELINE"},
+          "Source": {
+            "Type": "CODEPIPELINE"
+          },
+          "Environment": {
+            "ComputeType": "BUILD_GENERAL1_SMALL",
+            "Image": "aws/codebuild/nodejs:6.3.1",
+            "Type": "LINUX_CONTAINER",
+            "EnvironmentVariables": [
+              {
+                "Name": "AWS_DEFAULT_REGION",
+                "Value": {"Ref": "AWS::Region"}
+              },
+              {
+                "Name": "FRONTEND_S3_BUCKET",
+                "Value": {"Ref": "CloudHW3b1"}
+              },
+              {
+                "Name": "LF1",
+                "Value": {"Ref": "CloudHW3LF1"}
+              },
+              {
+                "Name": "LF2",
+                "Value": {"Ref": "CloudHW3LF2"}
+              }
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "3da81b48-d098-418f-85ac-5868faa67230"
+        }
+      }
+    }
+  },
+}
