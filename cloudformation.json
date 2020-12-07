@@ -1,4 +1,10 @@
 {
+  "Parameters": {
+    "GitHubRepo": {"Type": "String"},
+    "GitHubBranch": {"Type": "String"},
+    "GitHubToken": {"Type": "String"},
+    "GitHubUser": {"Type": "String"}
+  },
   "AWSTemplateFormatVersion": "2010-09-09",
   "Metadata": {
     "AWS::CloudFormation::Designer": {
@@ -390,10 +396,18 @@
                   }
                 ],
                 "Configuration": {
-                  "Owner": {"Ref": "GitHubUser"},
-                  "Repo": {"Ref": "GitHubRepo"},
-                  "Branch": {"Ref": "GitHubBranch"},
-                  "OAuthToken": {"Ref": "GitHubToken"}
+                  "Owner": {
+                    "Ref": "GitHubUser"
+                  },
+                  "Repo": {
+                    "Ref": "GitHubRepo"
+                  },
+                  "Branch": {
+                    "Ref": "GitHubBranch"
+                  },
+                  "OAuthToken": {
+                    "Ref": "GitHubToken"
+                  }
                 },
                 "RunOrder": 1
               }
@@ -411,20 +425,23 @@
                   "Provider": "CodeBuild"
                 },
                 "Configuration": {
-                  "ProjectName": {"Ref": "DeployAction"}
+                  "ProjectName": {
+                    "Ref": "CloudHW3CodeBuild"
+                  }
                 },
                 "InputArtifacts": {
                   "Name": "SourceOutput"
                 },
-                "OutputArtifacts":{
+                "OutputArtifacts": {
                   "Name": "DeployOutput"
                 }
               }
             ]
           }
         ]
-      },
-      "CloudHW3CodeBuild": {
+      }
+    },
+    "CloudHW3CodeBuild": {
         "Type": "AWS::CodeBuild::Project",
         "Properties": {
           "Artifacts": {"Type": "CODEPIPELINE"},
@@ -442,7 +459,7 @@
               },
               {
                 "Name": "FRONTEND_S3_BUCKET",
-                "Value": {"Ref": "CloudHW3b1"}
+                "Value": {"Ref": "CloudHW3B1"}
               },
               {
                 "Name": "LF1",
@@ -455,12 +472,7 @@
             ]
           }
         }
-      },
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "3da81b48-d098-418f-85ac-5868faa67230"
-        }
       }
-    }
-  },
+  }
 }
+
