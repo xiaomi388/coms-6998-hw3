@@ -2,7 +2,7 @@
 
 # shellcheck disable=SC2164
 cd "$1/package"
-zip -r "${OLDPWD}/function.zip" .
+zip -r "../function.zip" .
 
 cd ..
 ls
