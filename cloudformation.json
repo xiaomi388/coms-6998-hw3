@@ -225,6 +225,25 @@
         }
       }
     },
+    "CloudHW3BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {"Ref": "CloudHW3B1"},
+        "PolicyDocument": {
+          "Id": "PublicWebsitePolicy",
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Sid": "PublicReadForGetBUcketObjects",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": {
+              "Fn::Join": ["", ["arn:aws:s3:::", {"Ref":  "CloudHW3B1"}, "/*"]]
+            }
+          }]
+        }
+      }
+    },
     "CloudHW3Gateway": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
@@ -385,10 +404,40 @@
         }
       }
     },
+    "CloudHW3ES": {
+      "Type": "AWS::Elasticsearch::Domain",
+      "Properties": {
+        "DomainName": "cloudhw3es",
+        "ElasticsearchClusterConfig": {
+          "DedicatedMasterEnabled": "false",
+          "InstanceCount": 1,
+          "ZoneAwarenessEnabled": "false",
+          "InstanceType":"t2.small.elasticsearch"
+        },
+        "EBSOptions":{
+          "EBSEnabled":true,
+          "Iops":0,
+          "VolumeSize":20,
+          "VolumeType":"gp2"
+        },
+        "SnapshotOptions": {
+          "AutomatedSnapshotStartHour":"0"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "a1a660f3-5c07-4a7b-a419-5ec3d0dbd512"
+        }
+      }
+    },
     "CloudHW3CP": {
       "Type": "AWS::CodePipeline::Pipeline",
       "Properties": {
         "Name": "cloudhw3cp",
+        "ArtifactStore":{
+          "Type": "S3",
+          "Location": {"Ref": "CloudHW3B2"}
+        },
         "RoleArn": {
           "Fn::GetAtt": ["CloudHW3Role", "Arn"]
         },
@@ -402,7 +451,7 @@
                   "Category": "Source",
                   "Owner": "ThirdParty",
                   "Version": "1",
-                  "Provider": "Github"
+                  "Provider": "GitHub"
                 },
                 "OutputArtifacts": [
                   {
