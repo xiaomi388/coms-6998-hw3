@@ -205,7 +205,8 @@
     "CloudHW3B1": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "AccessControl": "PublicRead"
+        "AccessControl": "PublicRead",
+        "BucketName": "cloudhw3b1"
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -215,7 +216,9 @@
     },
     "CloudHW3B2": {
       "Type": "AWS::S3::Bucket",
-      "Properties": {},
+      "Properties": {
+        "BucketName": "cloudhw3b2"
+      },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
           "id": "a2cb0a72-98ac-4a89-a6d8-c87b3728c97b"
@@ -224,28 +227,36 @@
     },
     "CloudHW3Gateway": {
       "Type": "AWS::ApiGateway::RestApi",
-      "Properties": {},
+      "Properties": {
+        "Name":"CloudHW3Gateway",
+        "Description": "CloudHW3API",
+        "BodyS3Location": {
+          "Bucket": "cloudhw3swagger",
+          "Key": "swagger.yaml.txt"
+        }
+      },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
           "id": "b92a9d00-3fce-4b0b-9feb-d5b4f2991d6b"
         }
       }
     },
-    "CloudHW3ES": {
-      "Type": "AWS::Elasticsearch::Domain",
-      "Properties": {},
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "a1a660f3-5c07-4a7b-a419-5ec3d0dbd512"
-        }
-      }
-    },
     "CloudHW3LF2": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
-        "role": {
-          "Ref": "CloudHW3Role"
-        }
+        "FunctionName": "cloudhw3lf2",
+        "VpcConfig": {
+          "SecurityGroupIds": [{"Ref": "CloudHW3SG"}],
+          "SubnetIds": [{"Ref": "CloudHW3SN"}]
+        },
+        "Role": {
+          "Fn::GetAtt": ["CloudHW3Role", "Arn"]
+        },
+        "Code": {
+          "ZipFile": "import json\ndef lambda_handler(event, context):\n    return {'statusCode': 200, 'body': json.dumps('helloworld!')}"
+        },
+        "Handler": "index.lambda_handler",
+        "Runtime": "python3.8"
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -256,10 +267,19 @@
     "CloudHW3LF1": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
-        "SecurityGroupIds": "${CloudHW3VPC.VpcId}",
+        "FunctionName": "cloudhw3lf1",
+        "VpcConfig": {
+          "SecurityGroupIds": [{"Ref": "CloudHW3SG"}],
+          "SubnetIds": [{"Ref": "CloudHW3SN"}]
+        },
         "Role": {
-          "Ref": "CloudHW3Role"
-        }
+          "Fn::GetAtt": ["CloudHW3Role", "Arn"]
+        },
+        "Code": {
+          "ZipFile": "import json\ndef lambda_handler(event, context):\n    return {'statusCode': 200, 'body': json.dumps('helloworld!')}"
+        },
+        "Handler": "index.lambda_handler",
+        "Runtime": "python3.8"
       },
       "Metadata": {
         "AWS::CloudFormation::Designer": {
@@ -295,16 +315,18 @@
     "CloudHW3SG": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
+        "GroupName": "cloudhw3sg",
+        "GroupDescription": "cloudhw3sg",
         "VpcId": {
           "Ref": "CloudHW3VPC"
         },
-        "Ingress": [
+        "SecurityGroupIngress": [
           {
             "CidrIp": "0.0.0.0/0",
             "IpProtocol": -1
           }
         ],
-        "Egress": [
+        "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
             "IpProtocol": -1
@@ -317,30 +339,21 @@
         }
       }
     },
-    "CloudHW3SNCidrBlock": {
-      "Type": "AWS::EC2::SubnetCidrBlock",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "CloudHW3SN"
-        }
-      },
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "9b7ce24b-e5d5-421b-8a90-5d941e1fe191"
-        }
-      }
-    },
     "CloudHW3Role": {
       "Type": "AWS::IAM::Role",
       "Properties": {
+        "RoleName": "cloudhw3role",
         "AssumeRolePolicyDocument": {
-          "Version": "2020-12-7",
+          "Version": "2012-10-17",
           "Statement": [
             {
               "Effect": "Allow",
               "Principal": {
                 "Service": [
-                  "*"
+                  "codebuild.amazonaws.com",
+                  "codepipeline.amazonaws.com",
+                  "lambda.amazonaws.com",
+                  "ec2.amazonaws.com"
                 ]
               },
               "Action": [
@@ -354,7 +367,7 @@
           {
             "PolicyName": "root",
             "PolicyDocument": {
-              "Version": "2020-12-07",
+              "Version": "2012-10-17",
               "Statement": [
                 {
                   "Effect": "Allow",
@@ -375,8 +388,9 @@
     "CloudHW3CP": {
       "Type": "AWS::CodePipeline::Pipeline",
       "Properties": {
+        "Name": "cloudhw3cp",
         "RoleArn": {
-          "Ref": "CloudHW3Role"
+          "Fn::GetAtt": ["CloudHW3Role", "Arn"]
         },
         "Stages": [
           {
@@ -429,12 +443,12 @@
                     "Ref": "CloudHW3CodeBuild"
                   }
                 },
-                "InputArtifacts": {
+                "InputArtifacts": [{
                   "Name": "SourceOutput"
-                },
-                "OutputArtifacts": {
+                }],
+                "OutputArtifacts": [{
                   "Name": "DeployOutput"
-                }
+                }]
               }
             ]
           }
@@ -444,6 +458,8 @@
     "CloudHW3CodeBuild": {
         "Type": "AWS::CodeBuild::Project",
         "Properties": {
+          "Name": "cloudhw3codebuild",
+          "ServiceRole": {"Ref": "CloudHW3Role"},
           "Artifacts": {"Type": "CODEPIPELINE"},
           "Source": {
             "Type": "CODEPIPELINE"
