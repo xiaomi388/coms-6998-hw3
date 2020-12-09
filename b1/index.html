@@ -1,7 +1,178 @@
-<html>
- <head>
- </head>
- <body>
-   <h1>Hello World<h1>
- </body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HW3 Album</title>
+
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="./apiGateway-js-sdk/apigClient.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../dist/main.js"></script>
+
+    <script>
+        function noKeywordError() {
+            alert("Please add some keywords for search.");
+        }
+        function searchClicked() {
+          var sdk = apigClientFactory.newClient({});
+          var form = document.querySelector("#formElem");
+          var keywordString = form.querySelector('textarea[name="search"]').value
+          if(keywordString == undefined || keywordString == ""){
+            noKeywordError();
+            return;
+          }
+          var params = {
+            q: keywordString
+          }
+          sdk.searchGet(params, {}, {})
+            .then((response) => {
+              console.log(response);
+              // return success(name_raw);
+            })
+            .catch((error) => {
+              console.log(error);
+              // return alreadExisted(error.data.error);
+            });
+        }
+
+        function noFileSelectedError() {
+            alert("Please select a PNG/JPG/JPEG file to upload.");
+        }
+        function uploadClicked() {
+          var sdk = apigClientFactory.newClient({});
+          var form = document.querySelector("#formElem2");
+          var file = form.querySelector('input[name="filename"]').files[0]
+          var pattern = /[\s\S]+(\.jpg|\.png|\.jpeg)/
+
+          if(file == undefined || file == "" || !pattern.test(file.name)){
+            noFileSelectedError();
+            return;
+          }
+          console.log(file);
+
+          var reader = new FileReader();
+
+          reader.onload = function(e) {
+
+            console.log("array buffer");
+            console.log(e.target.result);
+
+            sdk.uploadPut({}, e.target.result, {})
+              .then((response) => {
+                console.log(response);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+            };
+
+          reader.readAsArrayBuffer(file);
+        }
+    </script>
+
+    <link href="./bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      #transcript {
+        padding-top: 5px;
+        margin-right: 15px;
+      } 
+      #button{
+        margin-top: -5px;
+      }
+      #formElem2{
+        margin-top: 30px;
+      }
+      #start-button, #stop-button, #reset-button{
+        margin-top: -50px;
+      }
+    </style>
+
+  </head>
+  <body>
+
+<main>
+
+  <section class="text-center">
+    <div class="row py-lg-5">
+      <div class="mx-auto">
+        <h1 class="fw-light">HW3 Album</h1>
+        <div id="formElem">
+          <textarea type="text" id="transcript" class="input_box" name="search" placeholder="Press Start and speak into your mic OR just type keywords." cols="30"></textarea>
+          <input type="hidden" id="access_id" value="AKIAJHLSFWWRXJRZQX7Q" />
+          <input type="hidden"" id="secret_key" value="imuywEBDzxgBkWzavkrIDdtLqgYo9k9khP9KjIQe" />
+          <input type="hidden" id="session_token" placeholder="SESSION TOKEN" value="" />
+          <input type="hidden"" id="language" value="en-US" />
+          <input type="hidden"" id="region" value="us-east-1" />
+          <button id="start-button" class="button-xl" title="Start Transcription">
+            <i class="fa fa-microphone"></i> Start
+          </button>
+          <button id="stop-button" class="button-xl" title="Stop Transcription" disabled="true"><i class="fa fa-stop-circle"></i> Stop</button>
+          <button id="reset-button" class="button-xl button-secondary" title="Clear Transcript"> 
+            Clear Transcript
+          </button>
+          <button class="btn btn-primary" id="button" onclick="searchClicked()" type="submit">Search</button>
+        </div>
+        <div id="formElem2">
+          <input type="file" id="myFile" name="filename" value="fileupload">
+          <button class="btn btn-primary" id="button" onclick="uploadClicked()" type="submit">Submit</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="album py-5 bg-light">
+    <div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">: )</text></svg>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">: )</text></svg>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">: )</text></svg>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">: )</text></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+  </body>
 </html>
