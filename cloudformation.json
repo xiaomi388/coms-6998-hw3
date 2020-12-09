@@ -250,7 +250,6 @@
     },
     "CloudHW3B2":{
       "Type":"AWS::S3::Bucket",
-      "DependsOn":"CloudHW3LF2Permission",
       "Properties":{
         "BucketName":"cloudhw3b2",
         "NotificationConfiguration":{
@@ -470,10 +469,13 @@
                   }
                 },
                 "x-amazon-apigateway-integration":{
-                  "httpMethod":"POST",
-                  "type":"aws_proxy",
+                  "credentials": {
+                    "Fn::GetAtt": ["CloudHW3Role", "Arn"]
+                  },
+                  "httpMethod":"PUT",
+                  "type":"aws",
                   "uri":{
-                    "Fn::Sub":"arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CloudHW3LF2.Arn}/invocations"
+                    "Fn::Sub":"arn:aws:apigateway:${AWS::Region}:s3:path/cloudhw3b2"
                   }
                 }
               },
@@ -568,7 +570,7 @@
         }
       }
     },
-    "CloudHW3GatewayDeployment1234567":{
+    "CloudHW3GatewayDeployment123456":{
       "Type":"AWS::ApiGateway::Deployment",
       "DependsOn": "CloudHW3Gateway",
       "Properties":{
@@ -739,6 +741,13 @@
         }
       }
     },
+    "CloudHW3ServiceLinkedRole": {
+      "Type": "AWS::IAM::ServiceLinkedRole",
+      "Properties": {
+        "AWSServiceName": "es.amazonaws.com",
+        "Description": "Role for ES to access resources in my VPC"
+      }
+    },
     "CloudHW3Role":{
       "Type":"AWS::IAM::Role",
       "Properties":{
@@ -787,8 +796,9 @@
     },
     "CloudHW3ES":{
       "Type":"AWS::Elasticsearch::Domain",
+      "DependsOn": "CloudHW3ServiceLinkedRole",
       "Properties":{
-        "DomainName":"cloudhw3es",
+        "DomainName":"photos",
         "ElasticsearchClusterConfig":{
           "DedicatedMasterEnabled":"false",
           "InstanceCount":1,
@@ -803,6 +813,18 @@
         },
         "SnapshotOptions":{
           "AutomatedSnapshotStartHour":"0"
+        },
+        "VPCOptions": {
+          "SecurityGroupIds":[
+            {
+              "Ref":"CloudHW3SG"
+            }
+          ],
+          "SubnetIds":[
+            {
+              "Ref":"CloudHW3SN"
+            }
+          ]
         }
       },
       "Metadata":{
@@ -921,7 +943,7 @@
             {
               "Name":"FRONTEND_S3_BUCKET",
               "Value":{
-                "Ref":"CloudHW3B1"
+                "Ref":"CloudHW3BCP"
               }
             },
             {

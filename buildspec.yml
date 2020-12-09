@@ -5,6 +5,6 @@ phases:
       - echo Deploying frontend
       - aws s3 cp . s3://$FRONTEND_S3_BUCKET --recursive
       - echo Deploying lf1
-      - ./upload.sh lf1
+      - ./upload.sh lf1 cloudhw3lf1
       - echo Deploying lf2
-      - ./upload.sh lf2
+      - ./upload.sh lf2 cloudhw3lf2
