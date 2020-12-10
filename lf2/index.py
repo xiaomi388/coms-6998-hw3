@@ -13,14 +13,15 @@ from botocore.httpsession import URLLib3Session
 from botocore.session import Session
 
 # TODO: set name and alias here
-LexBotName = "DiningBot"
-LexBotAlias = "DiningSuggestBot"
+LexBotName = "SearchBot"
+LexBotAlias = "SearchBotRelease"
 
 # TODO: set ES URL and index name
-ES_URI = 'FILL_IN_HERE.us-east-1.es.amazonaws.com'
-# e.g.
+ES_URI = 'vpc-photo-2qynlwswrezwrykoqprji2pvwy.us-east-1.es.amazonaws.com'
 # ES_URI = 'search-photos-nxhnkzvplruzj6ulteihhexoom.us-east-1.es.amazonaws.com'
-ES_INDEX_NAME = '/photos'
+ES_INDEX_NAME = '/photo'
+# only for bulk
+ES_INDEX = 'photo'
 
 PREDEFINED_NULL_VALUE = "NULLVALUE"
 PREDEFINED_SEPARATOR = "```"
@@ -86,20 +87,21 @@ def write_data(payload):
 
 def add_samples():
     payload = ""
-
-    field = { "index" : { "_index": "photos", "_id": "1"} }
+    OBJECTKEYPREFIX = "TESTTESTTEST/"
+    BUCKETNAME = "INVALID_BUCKET/"
+    field = { "index" : { "_index": ES_INDEX, "_id": "1"} }
     payload += json.dumps(field) + "\n"
-    field = {"objectKey" : "photo1.jpg", "bucket": "yourbucket", "labels": ["person", "dog", "ball", "park"]}
-    payload += json.dumps(field) + "\n"
-    
-    field = { "index" : { "_index": "photos", "_id": "2"} }
-    payload += json.dumps(field) + "\n"
-    field = {"objectKey" : "photo2.jpg", "bucket": "yourbucket", "labels": ["person", "cat"]}
+    field = {"objectKey" : OBJECTKEYPREFIX+"photo1.jpg", "bucket": BUCKETNAME+"yourbucket", "labels": ["testtesttestperson", "testtesttestdog", "testtesttestball", "testtesttestpark"]}
     payload += json.dumps(field) + "\n"
     
-    field = { "index" : { "_index": "photos", "_id": "3"} }
+    field = { "index" : { "_index": ES_INDEX, "_id": "2"} }
     payload += json.dumps(field) + "\n"
-    field = {"objectKey" : "photo3.jpg", "bucket": "yourbucket", "labels": ["dog", "cat", "grass", "person"]}
+    field = {"objectKey" : OBJECTKEYPREFIX+"photo2.jpg", "bucket": BUCKETNAME+"yourbucket", "labels": ["testtesttestperson", "testtesttestcat"]}
+    payload += json.dumps(field) + "\n"
+    
+    field = { "index" : { "_index": ES_INDEX, "_id": "3"} }
+    payload += json.dumps(field) + "\n"
+    field = {"objectKey" : OBJECTKEYPREFIX+"photo3.jpg", "bucket": BUCKETNAME+"yourbucket", "labels": ["testtesttestdog", "testtesttestcat", "testtesttestgrass", "testtesttestperson"]}
     payload += json.dumps(field) + "\n"
     
     write_data(payload)
@@ -112,13 +114,17 @@ def run_one_es_test(objectNames):
 
 def run_es_tests():
     add_samples()
-    tests = [["person"],["dog"],["cat"], ["ball"],["park"],["grass"],["nothing"],["dog", "cat"],["park","person","ball"],
+    tests = [["testtesttestperson"],["testtesttestdog"],["testtesttestcat"], ["testtesttestball"],["testtesttestpark"],["testtesttestgrass"],
+    ["nothing"],["testtesttestdog", "testtesttestcat"],["testtesttestpark","testtesttestperson","testtesttestball"],
+    ["testtesttestdog", "testtesttestperson"],
+    ["person"],["dog"],["cat"], ["ball"],["park"],["grass"],["nothing"],["dog", "cat"],["park","person","ball"],
     ["dog", "person"]]
+     # make sure no dirty data in es
     for i in range(0, len(tests)):
         run_one_es_test(tests[i])
 
 def lambda_handler(event, context):
-    # run_es_tests()
+    run_es_tests()
 
     userId = "user" + str(int(random.random() * 100000000000))  # random userID
     
