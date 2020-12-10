@@ -410,7 +410,7 @@
                 "x-amazon-apigateway-integration":{
                   "responses":{
                     "default":{
-                      "statusCode":200,
+                      "statusCode": 200,
                       "responseParameters":{
                         "method.response.header.Access-Control-Allow-Methods":"'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'",
                         "method.response.header.Access-Control-Allow-Headers":"'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
@@ -418,7 +418,7 @@
                       }
                     }
                   },
-                  "requestTemplates:": "{\"statusCode\": 200}",
+                  "requestTemplates": {"application/json":  "{\"statusCode\": 200}"},
                   "type": "mock",
                   "passthroughBehavior": "when_no_match"
                 }
@@ -429,6 +429,14 @@
                 "summary":"photo upload method",
                 "description":"This API takes in the multi-part body sent to it (ex. a photo) and uploads it to an S3 bucket.\n",
                 "operationId":"uploadPhoto",
+                "parameters": [{
+                  "in": "query",
+                  "name": "filename",
+                  "schema": {
+                    "type": "string"
+                  },
+                  "required": "true"
+                }],
                 "consumes":[
                   "image/png",
                   "image/jpg",
@@ -472,10 +480,29 @@
                   "credentials": {
                     "Fn::GetAtt": ["CloudHW3Role", "Arn"]
                   },
+                  "responses": {
+                    "4\\d{2}": {
+                      "statusCode": "400"
+                    },
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters":{
+                        "method.response.header.Access-Control-Allow-Origin":"'*'"
+                      }
+                    },
+                    "5\\d{2}": {
+                      "statusCode": "500"
+                    }
+                  },
                   "httpMethod":"PUT",
+                  "contentHandling": "CONVERT_TO_BINARY",
                   "type":"aws",
+                  "requestParameters": {
+                    "integration.request.path.object": "method.request.header.filename",
+                    "integration.request.path.bucket": "'cloudhw3b2'"
+                  },
                   "uri":{
-                    "Fn::Sub":"arn:aws:apigateway:${AWS::Region}:s3:path/cloudhw3b2"
+                    "Fn::Sub":"arn:aws:apigateway:${AWS::Region}:s3:path/{bucket}/{object}"
                   }
                 }
               },
@@ -508,7 +535,7 @@
                 "x-amazon-apigateway-integration":{
                   "responses":{
                     "default":{
-                      "statusCode":200,
+                      "statusCode": 200,
                       "responseParameters":{
                         "method.response.header.Access-Control-Allow-Methods":"'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'",
                         "method.response.header.Access-Control-Allow-Headers":"'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
@@ -516,7 +543,7 @@
                       }
                     }
                   },
-                  "requestTemplates:": "{\"statusCode\": 200}",
+                  "requestTemplates": {"application/json":  "{\"statusCode\": 200}"},
                   "type": "mock",
                   "passthroughBehavior": "when_no_match"
                 }
@@ -762,7 +789,8 @@
                   "codebuild.amazonaws.com",
                   "codepipeline.amazonaws.com",
                   "lambda.amazonaws.com",
-                  "ec2.amazonaws.com"
+                  "ec2.amazonaws.com",
+                  "apigateway.amazonaws.com"
                 ]
               },
               "Action":[
@@ -798,7 +826,8 @@
       "Type":"AWS::Elasticsearch::Domain",
       "DependsOn": "CloudHW3ServiceLinkedRole",
       "Properties":{
-        "DomainName":"photos",
+        "DomainName":"photo",
+        "ElasticsearchVersion": "7.9",
         "ElasticsearchClusterConfig":{
           "DedicatedMasterEnabled":"false",
           "InstanceCount":1,

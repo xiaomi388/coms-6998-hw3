@@ -58,16 +58,20 @@
             noFileSelectedError();
             return;
           }
-          console.log(file);
+
+          // sdk.uploadPut({}, file, {})
+          //         .then((response) => {
+          //           console.log(response);
+          //         })
+          //         .catch((error) => {
+          //           console.log(error);
+          //         });
 
           var reader = new FileReader();
 
           reader.onload = function(e) {
-
-            console.log("array buffer");
-            console.log(e.target.result);
-
-            sdk.uploadPut({}, e.target.result, {})
+            sdk.uploadPut({"filename": file.name}, e.target.result.split(',')[1],
+                    {"headers": {"content-type": "image/"+file.name.split(".").pop()}})
               .then((response) => {
                 console.log(response);
               })
@@ -76,7 +80,7 @@
               });
             };
 
-          reader.readAsArrayBuffer(file);
+          reader.readAsDataURL(file);
         }
     </script>
 
