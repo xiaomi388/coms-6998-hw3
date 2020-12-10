@@ -56,7 +56,9 @@ def es_search_for(objectNames):
     SigV4Auth(credentials, 'es', es_region).add_auth(req)
     http_session = URLLib3Session()
     res = http_session.send(req.prepare())
-    # print(res._content)
+    print("ES search for, ES Endpoint response: ")
+    print(res._content)
+    print("ES search for, ES Endpoint response end.")
     search_result = []
     if 200 <= res.status_code <= 299:
         ret = json.loads(res._content)
@@ -83,7 +85,9 @@ def write_data(payload):
     SigV4Auth(credentials, 'es', es_region).add_auth(req)
     http_session = URLLib3Session()
     res = http_session.send(req.prepare())
+    print("ES write data, ES Endpoint response: ")
     print(res._content)
+    print("ES write data, ES Endpoint response end.")
 
 def add_samples():
     payload = ""
