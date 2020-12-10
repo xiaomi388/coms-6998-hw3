@@ -27,7 +27,6 @@
           var sdk = apigClientFactory.newClient({});
           var form = document.querySelector("#formElem");
           var keywordString = form.querySelector('textarea[name="search"]').value
-
           if(keywordString == undefined || keywordString == ""){
             noKeywordError();
             return;
@@ -38,7 +37,6 @@
           }
           sdk.searchGet(params, {}, {})
             .then((response) => {
-              // TODO
               console.log("get success:");
               console.log(response.data.MatchedPhotos);
               var albumContent = document.getElementById('albumContent');
@@ -89,6 +87,7 @@
           reader.readAsDataURL(file);
         }
     </script>
+    <script src="script.js"></script>
 
     <link href="./bootstrap.min.css" rel="stylesheet">
 
@@ -106,18 +105,21 @@
           font-size: 3.5rem;
         }
       }
-      #transcript {
+      #formElem{
+        margin-top: 20px;
+      }
+      #input {
         padding-top: 5px;
         margin-right: 15px;
       } 
       #button{
-        margin-top: -5px;
+        margin-left: 10px;
       }
       #formElem2{
         margin-top: 30px;
       }
-      #start-button, #stop-button, #reset-button{
-        margin-top: -50px;
+      #record{
+        margin-top: 10px;
       }
     </style>
 
@@ -131,18 +133,13 @@
       <div class="mx-auto">
         <h1 class="fw-light">HW3 Album</h1>
         <div id="formElem">
-          <textarea type="text" id="transcript" class="input_box" name="search" placeholder="Press Start and speak into your mic OR just type keywords." cols="30"></textarea>
-          <input type="hidden" id="access_id" value="" />
-          <input type="hidden"" id="secret_key" value="" />
-          <input type="hidden" id="session_token" placeholder="SESSION TOKEN" value="" />
-          <input type="hidden"" id="language" value="en-US" />
-          <input type="hidden"" id="region" value="us-east-1" />
-          <button id="start-button" class="button-xl" title="Start Transcription">
-            <i class="fa fa-microphone"></i> Start
-          </button>
-          <button id="stop-button" class="button-xl" title="Stop Transcription" disabled="true"><i class="fa fa-stop-circle"></i> Stop</button>
-          <button id="reset-button" class="button-xl button-secondary" title="Clear">Clear</button>
-          <button class="btn btn-primary" id="button" onclick="searchClicked()" type="submit">Search</button>
+          <form action="javascript:void(0);">
+            <div>
+              <textarea id="input" class="input_box" type="text" name="search" placeholder="Press record to speak into your mic OR just type in for search." rows="2" cols="30"></textarea>
+            </div>
+            <button id="record">record</button>
+            <button class="btn btn-primary" id="button" onclick="searchClicked()" type="submit">Search</button>
+          </form>
         </div>
         <div id="formElem2">
           <input type="file" id="myFile" name="filename" value="fileupload">
