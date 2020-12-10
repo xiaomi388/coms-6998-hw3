@@ -3,7 +3,7 @@ phases:
   build:
     commands:
       - echo Deploying frontend
-      - aws s3 cp . s3://$FRONTEND_S3_BUCKET --recursive
+      - aws s3 cp ./b1 s3://$FRONTEND_S3_BUCKET --recursive
       - echo Deploying lf1
       - ./upload.sh lf1 cloudhw3lf1
       - echo Deploying lf2

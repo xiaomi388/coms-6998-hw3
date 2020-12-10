@@ -972,7 +972,7 @@
             {
               "Name":"FRONTEND_S3_BUCKET",
               "Value":{
-                "Ref":"CloudHW3BCP"
+                "Ref":"CloudHW3B1"
               }
             },
             {
