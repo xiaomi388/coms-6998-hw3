@@ -17,11 +17,11 @@ LexBotName = "SearchBot"
 LexBotAlias = "SearchBotRelease"
 
 # TODO: set ES URL and index name
-ES_URI = 'vpc-photo-2qynlwswrezwrykoqprji2pvwy.us-east-1.es.amazonaws.com'
+ES_URI = 'vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com'
 # ES_URI = 'search-photos-nxhnkzvplruzj6ulteihhexoom.us-east-1.es.amazonaws.com'
-ES_INDEX_NAME = '/photo'
+ES_INDEX_NAME = '/photos'
 # only for bulk
-ES_INDEX = 'photo'
+ES_INDEX = 'photos'
 
 PREDEFINED_NULL_VALUE = "NULLVALUE"
 PREDEFINED_SEPARATOR = "```"
@@ -91,21 +91,21 @@ def write_data(payload):
 
 def add_samples():
     payload = ""
-    OBJECTKEYPREFIX = "TESTTESTTEST/"
-    BUCKETNAME = "INVALID_BUCKET/"
+    OBJECTKEYPREFIX = "6892b667a9f55a12a7835f54842251ee.jpg"
+    BUCKETNAME = "cloudhw3b2"
     field = { "index" : { "_index": ES_INDEX, "_id": "1"} }
     payload += json.dumps(field) + "\n"
-    field = {"objectKey" : OBJECTKEYPREFIX+"photo1.jpg", "bucket": BUCKETNAME+"yourbucket", "labels": ["testtesttestperson", "testtesttestdog", "testtesttestball", "testtesttestpark"]}
+    field = {"objectKey" : OBJECTKEYPREFIX+"", "bucket": BUCKETNAME, "labels": ["testtesttestperson", "testtesttestdog", "testtesttestball", "testtesttestpark"]}
     payload += json.dumps(field) + "\n"
     
     field = { "index" : { "_index": ES_INDEX, "_id": "2"} }
     payload += json.dumps(field) + "\n"
-    field = {"objectKey" : OBJECTKEYPREFIX+"photo2.jpg", "bucket": BUCKETNAME+"yourbucket", "labels": ["testtesttestperson", "testtesttestcat"]}
+    field = {"objectKey" : OBJECTKEYPREFIX+"", "bucket": BUCKETNAME, "labels": ["testtesttestperson", "testtesttestcat"]}
     payload += json.dumps(field) + "\n"
     
     field = { "index" : { "_index": ES_INDEX, "_id": "3"} }
     payload += json.dumps(field) + "\n"
-    field = {"objectKey" : OBJECTKEYPREFIX+"photo3.jpg", "bucket": BUCKETNAME+"yourbucket", "labels": ["testtesttestdog", "testtesttestcat", "testtesttestgrass", "testtesttestperson"]}
+    field = {"objectKey" : OBJECTKEYPREFIX+"", "bucket": BUCKETNAME, "labels": ["testtesttestdog", "testtesttestcat", "testtesttestgrass", "testtesttestperson"]}
     payload += json.dumps(field) + "\n"
     
     write_data(payload)
@@ -128,13 +128,21 @@ def run_es_tests():
         run_one_es_test(tests[i])
 
 def lambda_handler(event, context):
-    run_es_tests()
+    # run_es_tests()
 
     userId = "user" + str(int(random.random() * 100000000000))  # random userID
     
     print(event)
     
-    userInput = event["q"]
+    userInput = event.get("q", None)
+
+    if not userInput:
+        tmp = event.get('queryStringParameters', None)
+        userInput = tmp.get("q", None)
+    
+    if not userInput:
+        userInput = "show me testtesttestperson and testtesttestdog"
+        print("Error: cannot parse parameters!!! Default value:", userInput)
 
     client = boto3.client('lex-runtime')
 
@@ -150,12 +158,19 @@ def lambda_handler(event, context):
     )
     
     print(lexResponse)
-    lexText = lexResponse.get('message', None)
+
+    fulfilled = lexResponse.get('dialogState', None)
+
     objectNames = []
     search_result = []
-    if lexText:
-        objectNames = lexText.split(PREDEFINED_SEPARATOR)
-        search_result = es_search_for(objectNames)
+
+    if fulfilled and fulfilled == "Fulfilled":
+        lexText = lexResponse.get('message', None)
+        if lexText:
+            objectNames = lexText.split(PREDEFINED_SEPARATOR)
+            search_result = es_search_for(objectNames)
+    else:
+        print("Warning: Lex not fulfilled.")
 
     response = {
         'MatchedPhotos': search_result,
@@ -173,8 +188,4 @@ def lambda_handler(event, context):
             'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
         },
         'body': json.dumps(response),
-        'messages': 
-                {
-                  'type': "whatever",
-                }
     }
