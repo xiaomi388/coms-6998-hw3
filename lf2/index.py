@@ -40,7 +40,7 @@ def es_search_for(objectNames):
     for i in range(0, len(objectNames)):
         objectName = objectNames[i]
         if objectName != PREDEFINED_NULL_VALUE:
-            matchExpr.append({"term": {"labels": objectName}})
+            matchExpr.append({"term": {"labels": objectName.lower()}})
 
     payload = {
         # "size": 3,
