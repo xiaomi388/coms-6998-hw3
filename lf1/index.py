@@ -46,7 +46,7 @@ def lambda_handler(event, context):
     host = "vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com"
     es = Elasticsearch(
         hosts = [{'host': host, 'port': 443}],
-        http_auth = auth,
+        http_auth = awsauth,
         use_ssl = True,
         verify_certs = True,
         connection_class = RequestsHttpConnection
