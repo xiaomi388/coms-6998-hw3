@@ -37,7 +37,7 @@ def lambda_handler(event, context):
         }
     print(format)
     
-    es_host = "https://vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com/photos/Photo"
+    url = "https://vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com/photos/Photo"
     region = 'us-east-1'
     headers = {"Content-Type": "application/json"}
     r = requests.post(url, data=json.dumps(format), headers=headers)
@@ -69,5 +69,10 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('You have reached the end of the line')
-   } 
+        'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        },
+        'body': json.dumps("Images index done!"),
+    }
