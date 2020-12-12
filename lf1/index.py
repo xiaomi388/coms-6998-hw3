@@ -3,6 +3,8 @@ import boto3
 import time
 #from botocore.vendored 
 import requests
+from elasticsearch import Elasticsearch, RequestsHttpConnection
+from requests_aws4auth import AWS4Auth
 
 def lambda_handler(event, context):
     # TODO implement
@@ -37,25 +39,11 @@ def lambda_handler(event, context):
         }
     print(format)
     
-    url = "https://vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com/photos/Photo"
-    region = 'us-east-1'
-    headers = {"Content-Type": "application/json"}
-    r = requests.post(url, data=json.dumps(format), headers=headers)
-    print("Success", r)
-
-                     
-    '''host = 'vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com'
     region = 'us-east-1'
     service = 'es'
-
-    #credentials = boto3.Session().get_credentials()
-    #access_key = credentials.access_key
-    #secret_key = credentials.secret_key
-    auth = AWSRequestsAuth(
-                            aws_host=host,
-                            aws_region=region,
-                            aws_service=service)
-
+    credentials = boto3.Session().get_credentials()
+    awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
+    host = "vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com"
     es = Elasticsearch(
         hosts = [{'host': host, 'port': 443}],
         http_auth = auth,
@@ -63,9 +51,14 @@ def lambda_handler(event, context):
         verify_certs = True,
         connection_class = RequestsHttpConnection
     )
-    print(es.info())'''
+    r = es.index(index="photos", doc_type="img", body=json.dumps(format))
     
-    
+    '''url = "https://vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com/photos/photo"
+    region = 'us-east-1'
+    headers = {"Content-Type": "application/json"}
+    r = requests.post(url, data=json.dumps(format), headers=headers)'''
+    print("Success", r)
+
 
     return {
         'statusCode': 200,
@@ -76,3 +69,4 @@ def lambda_handler(event, context):
         },
         'body': json.dumps("Images index done!"),
     }
+
