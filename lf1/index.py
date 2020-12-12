@@ -1,5 +1,7 @@
 import json
 import boto3
+import time
+#from botocore.vendored 
 import requests
 
 def lambda_handler(event, context):
@@ -33,19 +35,23 @@ def lambda_handler(event, context):
         'createdTimestamp':timestamp,
         'labels':label_list
         }
-
+    print(format)
     
-    
+    es_host = "https://vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com/photos/Photo"
+    region = 'us-east-1'
+    headers = {"Content-Type": "application/json"}
+    r = requests.post(url, data=json.dumps(format), headers=headers)
+    print("Success", r)
 
-    host = 'vpc-photos-rr7lchatfncvoutiu2htehfqjq.us-east-1.es.amazonaws.com'
+                     
+    '''host = 'vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com'
     region = 'us-east-1'
     service = 'es'
 
-    credentials = boto3.Session().get_credentials()
-    access_key = credentials.access_key
-    secret_key = credentials.secret_key
-    auth = AWSRequestsAuth(aws_access_key=access_key,
-                            aws_secret_access_key=secret_key,
+    #credentials = boto3.Session().get_credentials()
+    #access_key = credentials.access_key
+    #secret_key = credentials.secret_key
+    auth = AWSRequestsAuth(
                             aws_host=host,
                             aws_region=region,
                             aws_service=service)
@@ -57,10 +63,9 @@ def lambda_handler(event, context):
         verify_certs = True,
         connection_class = RequestsHttpConnection
     )
-    print(es.info())
-    url = "https://vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com"
-    headers = {"Content-Type": "application/json"}
-    r = requests.post(url, data=json.dumps(format).encode("utf-8"), headers=headers)
+    print(es.info())'''
+    
+    
 
     return {
         'statusCode': 200,
