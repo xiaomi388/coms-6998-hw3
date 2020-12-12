@@ -38,8 +38,6 @@ def lambda_handler(event, context):
     
 
     host = 'vpc-photos-rr7lchatfncvoutiu2htehfqjq.us-east-1.es.amazonaws.com'
-    access_key = "AKIAJHLSFWWRXJRZQX7Q"
-    secret_key = "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"
     region = 'us-east-1'
     service = 'es'
 
