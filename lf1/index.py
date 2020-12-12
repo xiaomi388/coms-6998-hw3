@@ -51,7 +51,7 @@ def lambda_handler(event, context):
         verify_certs = True,
         connection_class = RequestsHttpConnection
     )
-    r = es.index(index="photos", doc_type="img", body=json.dumps(format))
+    r = es.index(index="photos", body=json.dumps(format))
     
     '''url = "https://vpc-photos-xl5r5xawwtjh4eix3xkcje2kda.us-east-1.es.amazonaws.com/photos/photo"
     region = 'us-east-1'
