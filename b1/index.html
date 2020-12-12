@@ -23,6 +23,9 @@
         function noKeywordError() {
             alert("Please add some keywords for search.");
         }
+        function noResult(keywordString) {
+            alert("No search result for: " + keywordString);
+        }
         function searchClicked() {
           var sdk = apigClientFactory.newClient({});
           var form = document.querySelector("#formElem");
@@ -38,9 +41,13 @@
           sdk.searchGet(params, {}, {})
             .then((response) => {
               console.log("get success:");
-              console.log(response.data.MatchedPhotos);
+              console.log(response);
               var albumContent = document.getElementById('albumContent');
               var photoList = response.data.MatchedPhotos;
+              if (photoList.length == 0){
+                noResult(keywordString);
+                return;
+              }
               for (var i = 0; i < photoList.length; i++) {
                 var url = "https://" + photoList[i]._source.bucket + ".s3.amazonaws.com/" + photoList[i]._source.objectKey;
                 var html = '<div class="col"><div class="card shadow-sm"><img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="' + url +'" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#55595c"/></img></div></div>';
