@@ -35,6 +35,10 @@
             return;
           }
 
+          // hide previous results if there is any
+          var albumContent = document.getElementById('albumContent');
+          albumContent.innerHTML = '';
+
           var params = {
             q: keywordString
           }
